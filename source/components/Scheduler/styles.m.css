@@ -29,6 +29,7 @@
 
             & input {
                 width: 215px;
+                height: 42px !important;
                 background-image: url('../../theme/assets/search-icon.svg');
                 background-repeat: no-repeat;
                 background-size: 18px 18px;
@@ -36,8 +37,8 @@
             }
         }
 
-        & input[type='text'],
-        & input[type='search'] {
+        & input {
+            -webkit-appearance: none; /* ← Этот грязный хакн нужен сафари для работы (проблеа со свойтсвом height)... */
             height: 42px;
             min-width: 215px;
             padding: 0 14px;
@@ -91,12 +92,53 @@
                     background-repeat: no-repeat;
                     background-size: 18px 18px;
                     background-position: 6% 50%;
+                    transition: background-color 0.3s ease-in-out;
+
+                    &:hover {
+                        background-color: var(--paletteColor11);
+                    }
+                }
+            }
+
+            & .overlay {
+                position: relative;
+
+                &:before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    height: 25px;
+                    width: 100%;
+                    z-index: 1;
+                    background: linear-gradient(
+                        to bottom,
+                        #E1E2E3,
+                        cubic-bezier(0.18, 0.3, 0.89, 1),
+                        transparent
+                    );
+                }
+
+                &:after {
+                    content: '';
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    height: 25px;
+                    width: 100%;
+                    z-index: 1;
+                    background: linear-gradient(
+                        to top,
+                        #E1E2E3,
+                        cubic-bezier(0.18, 0.3, 0.89, 1),
+                        transparent
+                    );
                 }
             }
 
             & ul {
-                min-height: 370px;
-                max-height: 370px;
+                min-height: 420px;
+                max-height: 420px;
                 overflow: scroll;
             }
         }
