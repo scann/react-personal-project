@@ -2,7 +2,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 60px 7%;
+    padding: 50px 7%;
     user-select: none;
     -webkit-user-select: none;
 
@@ -135,8 +135,8 @@
             }
 
             & ul {
-                min-height: 350px;
-                max-height: 350px;
+                min-height: 370px;
+                max-height: 370px;
                 overflow: scroll;
             }
         }
