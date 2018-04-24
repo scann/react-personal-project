@@ -36,7 +36,7 @@
         }
 
         & input {
-            -webkit-appearance: none; /* ← Этот грязный хакн нужен сафари для работы (проблеа со свойтсвом height)... */
+            -webkit-appearance: none; /* ← Этот грязный хак нужен сафари для работы (проблема со свойтсвом height)... */
             height: 42px;
             min-width: 215px;
             padding: 0 14px;
