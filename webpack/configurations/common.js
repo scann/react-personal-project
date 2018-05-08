@@ -70,7 +70,7 @@ export const generateCommonConfiguration = () => {
             new HtmlWebpackPlugin({
                 inject:      false,
                 template:    HtmlWebpackTemplate,
-                title:       'React: personal project',
+                title:       'React personal project',
                 appMountIds: ['app', 'spinner'],
                 mobile:      true,
             }),
