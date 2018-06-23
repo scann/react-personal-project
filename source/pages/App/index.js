@@ -9,12 +9,15 @@ export default class App extends Component {
             <h1
                 style = { {
                     display:        'flex',
-                    color:          'white',
-                    height:         '100vh',
+                    minHeight:      '100vh',
                     justifyContent: 'center',
                     alignItems:     'center',
+                    fontSize:       32,
+                    fontWeight:     700,
+                    color:          'snow',
+                    userSelect:     'none',
                 } }>
-                Начало здесь
+                Персональный проект: стартовая точка
             </h1>
         );
     }

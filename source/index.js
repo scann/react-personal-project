@@ -6,6 +6,6 @@ import { render } from 'react-dom';
 import './theme/init';
 
 // App
-import App from './containers/App';
+import App from './pages/App';
 
 render(<App />, document.getElementById('app'));

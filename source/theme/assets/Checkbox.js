@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 
 // Imstruments
-import { withSvg } from 'instruments/withSvg';
+import { withSvg } from '../../instruments/withSvg';
 
 class Checkbox extends Component {
     render () {

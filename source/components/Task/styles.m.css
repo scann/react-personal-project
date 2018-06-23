@@ -1,3 +1,5 @@
+@import '../../theme/breakpoints';
+
 .task {
     position: relative;
     display: flex;
@@ -21,7 +23,7 @@
         align-items: center;
         width: 85%;
 
-        & .complete {
+        & .toggleTaskCompletedState {
             margin-right: 20px;
         }
 
@@ -42,9 +44,26 @@
     }
 
     & .actions {
-        & .setPriority,
-        & .edit {
+        min-width: 100px;
+
+        & .toggleTaskFavoriteState,
+        & .updateTaskMessageOnClick {
             margin-right: 20px;
+        }
+    }
+
+    @media (width <= 740px) {
+        flex-direction: column-reverse;
+        padding: 10px 5px;
+        height: auto;
+
+        & .content {
+            width: 95%;
+        }
+
+        & .actions {
+            margin-bottom: 7px;
+            align-self: flex-end;
         }
     }
 }

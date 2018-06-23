@@ -1,13 +1,13 @@
 export class LocalStorage {
-    constructor() {
+    constructor () {
         this.storage = {};
     }
 
-    clear() {
+    clear () {
         this.storage = {};
     }
 
-    getItem = jest.fn(key => {
+    getItem = jest.fn((key) => {
         return this.storage[key] || null;
     });
 
@@ -15,11 +15,11 @@ export class LocalStorage {
         this.storage[key] = JSON.stringify(value);
     });
 
-    removeItem(key) {
+    removeItem (key) {
         delete this.storage[key];
     }
 
-    get length() {
+    get length () {
         return Object.keys(this.storage).length;
     }
 }

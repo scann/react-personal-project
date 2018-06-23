@@ -13,7 +13,9 @@
 */
 
 import { LocalStorage } from './mocks/localStorage';
+import { fetch } from './mocks/fetch';
 
 global.localStorage = new LocalStorage();
+global.fetch = fetch;
 
 global.__ENV__ = global.__PROD__ = process.env.NODE_ENV;

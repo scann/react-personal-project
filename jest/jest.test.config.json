@@ -2,32 +2,11 @@
     "runner": "jest-runner",
     "displayName": "test:unit",
     "rootDir": "../",
-    "verbose": false,
+    "verbose": true,
     "notify": true,
     "bail": false,
     "collectCoverage": false,
-    "collectCoverageFrom": ["<rootDir>/source/**/*.js"],
-    "coveragePathIgnorePatterns": [
-        "/node_modules/",
-        "/build/",
-        "/coverage/",
-        "/styles/",
-        "<rootDir>/source/index.js",
-        "<rootDir>/source/init/middleware",
-        "<rootDir>/source/pages/index.js",
-        "<rootDir>/source/views/index.js",
-        "<rootDir>/source/components/index.js",
-        "<rootDir>/source/bus/intl/sagas/workers/index.js",
-        "<rootDir>/source/components/index.js"
-    ],
-    "coverageThreshold": {
-        "global": {
-            "branches": 1,
-            "functions": 1,
-            "lines": 1,
-            "statements": 1
-        }
-    },
+    "collectCoverageFrom": ["<rootDir>/source/components/**/*.js"],
     "modulePaths": ["<rootDir>/source", "<rootDir>/node_modules"],
     "moduleFileExtensions": ["js", "json", "css"],
     "setupFiles": ["<rootDir>/jest/scripts/setupFiles.js"],

@@ -3,11 +3,11 @@ import React, { Component } from 'react';
 import { number } from 'prop-types';
 
 // Instruments
-import { getDisplayName } from './helpers';
+import { getDisplayName } from './';
 
 const decorateSvg = (
     { viewBoxWidth = 0, viewBoxHeight = 0, width = 0, height = 0 } = {},
-    Enhanceable
+    Enhanceable,
 ) => {
     class withSvg extends Component {
         static propTypes = {
@@ -52,15 +52,15 @@ const decorateSvg = (
         };
 
         _handleMouseEnter = () => {
-            this.setState(() => ({
+            this.setState({
                 hover: true,
-            }));
+            });
         };
 
         _handleMouseLeave = () => {
-            this.setState(() => ({
+            this.setState({
                 hover: false,
-            }));
+            });
         };
 
         _handleClick = () => {

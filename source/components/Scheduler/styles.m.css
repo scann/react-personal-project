@@ -1,13 +1,17 @@
+@import '../../theme/palette';
+@import '../../theme/breakpoints';
+
 .scheduler {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 50px 7%;
+    padding: 50px 4%;
     user-select: none;
-    -webkit-user-select: none;
+    min-height: 100vh;
 
     & main {
         width: 100%;
+        max-width: 950px;
         height: 100%;
         padding: 50px 85px;
         background-color: var(--paletteColor4);
@@ -21,7 +25,7 @@
 
             & h1 {
                 font-size: 32px;
-                font-weight: 500;
+                font-weight: 700;
                 color: var(--paletteColor5);
             }
 
@@ -36,7 +40,7 @@
         }
 
         & input {
-            -webkit-appearance: none; /* ← Этот грязный хак нужен сафари для работы (проблема со свойтсвом height)... */
+            -webkit-appearance: none; /* ← Этот хак нужен сафари для работы (проблема со свойством height)... */
             height: 42px;
             min-width: 215px;
             padding: 0 14px;
@@ -98,46 +102,14 @@
                 }
             }
 
-            & .overlay {
-                position: relative;
-
-                &:before {
-                    content: '';
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    height: 25px;
-                    width: 100%;
-                    z-index: 1;
-                    background: linear-gradient(
-                        to bottom,
-                        #E1E2E3,
-                        cubic-bezier(0.18, 0.3, 0.89, 1),
-                        transparent
-                    );
-                }
-
-                &:after {
-                    content: '';
-                    position: absolute;
-                    bottom: 0;
-                    left: 0;
-                    height: 25px;
-                    width: 100%;
-                    z-index: 1;
-                    background: linear-gradient(
-                        to top,
-                        #E1E2E3,
-                        cubic-bezier(0.18, 0.3, 0.89, 1),
-                        transparent
-                    );
-                }
-            }
-
             & ul {
                 min-height: 370px;
                 max-height: 370px;
                 overflow: scroll;
+
+                &::-webkit-scrollbar {
+                    display: none;
+                }
             }
         }
 
@@ -154,6 +126,67 @@
             & .completeAllTasks {
                 font-size: 20px;
                 color: var(--paletteColor7);
+            }
+        }
+    }
+
+    @media (width <= 840px) {
+        padding: 7px;
+
+        & main {
+            padding: 7px;
+
+            & header {
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+
+                & h1 {
+                    margin-bottom: 15px;
+                    font-size: 35px;
+                    text-align: center;
+                }
+
+                & input {
+                    width: 100%;
+                }
+            }
+
+            & section {
+                margin-bottom: 31px;
+
+                & form {
+                    display: flex;
+                    flex-direction: column;
+                    margin: 0 0 13px;
+
+                    & input[type='text'] {
+                        width: 100%;
+                        margin-bottom: 12px;
+                    }
+
+                    & button {
+                        margin-bottom: 12px;
+                    }
+                }
+            }
+
+            & footer {
+                margin-bottom: 14px;
+
+                & .completeAllTasks {
+                    font-size: 18px;
+                }
+            }
+        }
+    }
+
+    @media (width <= 380px) {
+        & main {
+            & header {
+                & h1 {
+                    font-size: 28px;
+                }
             }
         }
     }
