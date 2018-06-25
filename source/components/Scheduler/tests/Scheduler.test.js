@@ -14,38 +14,8 @@ jest.mock('../../../REST');
 
 describe('Компонент Scheduler:', () => {
     describe('должен иметь базовую разметку JSX:', () => {
-        describe('должен соответствовать снепшоту разметки', () => {
+        test('должен соответствовать снепшоту разметки', () => {
             expect(result).toMatchSnapshot();
-        });
-
-        describe('оберточный элемент', () => {
-            test('должен иметь тип section', () => {
-                expect(
-                    result
-                        .children()
-                        .first()
-                        .type(),
-                ).toBe('section');
-            });
-
-            test('должен иметь CSS-класс scheduler', () => {
-                expect(
-                    result
-                        .children()
-                        .first()
-                        .hasClass('scheduler'),
-                ).toBe(true);
-            });
-
-            test('должен содержать компонент <Spinner />', () => {
-                expect(result.find('Spinner')).toBeDefined();
-            });
-        });
-
-        describe('основной контент', () => {
-            test('должен содержать один элемент <main />, содержащий в себе основную часть разметки', () => {
-                expect(result.find('main').length).toBe(1);
-            });
         });
     });
 
