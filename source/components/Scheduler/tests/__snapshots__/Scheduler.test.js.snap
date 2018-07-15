@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Компонент Scheduler: должен иметь базовую разметку JSX: должен соответствовать снепшоту разметки 1`] = `
+exports[`Компонент Scheduler: должен иметь базовую разметку JSX: должен соответствовать снимку разметки 1`] = `
 <Scheduler>
   <section
     className="scheduler"
@@ -14,9 +14,7 @@ exports[`Компонент Scheduler: должен иметь базовую р
         />
       </Spinner>
       <header>
-        <h1
-          className="test"
-        >
+        <h1>
           Планировщик задач
         </h1>
         <input

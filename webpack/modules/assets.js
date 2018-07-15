@@ -43,7 +43,14 @@ export const loadImages = () => ({
 });
 
 export const setupFavicon = () => ({
-    plugins: [new FaviconsWebpackPlugin('./static/icons/favicon.png')],
+    plugins: [
+        new FaviconsWebpackPlugin({
+            logo:            './static/favicon/favicon.svg',
+            prefix:          'images/favicon/icon-[hash]',
+            statsFilename:   'iconstats-[hash].json',
+            persistentCache: true,
+        })
+    ],
 });
 
 export const setupHtml = () => ({
@@ -51,12 +58,11 @@ export const setupHtml = () => ({
         new HtmlWebpackPlugin({
             inject:   false,
             template: HtmlWebpackTemplate,
-            title:    'React personal project',
+            title:    'Интенсив по React: персональный проект',
             meta:     [
                 {
                     name:    'viewport',
-                    content:
-                        'user-scalable=no, width=device-width, initial-scale=1',
+                    content: 'user-scalable=no, width=device-width, initial-scale=1',
                 }
             ],
             appMountIds: ['app', 'spinner'],

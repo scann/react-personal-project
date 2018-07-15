@@ -14,7 +14,7 @@ jest.mock('../../../REST');
 
 describe('Компонент Scheduler:', () => {
     describe('должен иметь базовую разметку JSX:', () => {
-        test('должен соответствовать снепшоту разметки', () => {
+        test('должен соответствовать снимку разметки', () => {
             expect(result).toMatchSnapshot();
         });
     });
@@ -413,10 +413,6 @@ describe('Компонент Scheduler:', () => {
                     testMessage2,
                 );
                 result.setState(initialState);
-            });
-
-            test('максимальная длина строки элемента <input /> не должна превышать 50 символов', () => {
-                expect(result.find('form > input').prop('maxLength')).toBe(50);
             });
 
             test('максимальная длина строки элемента <input /> не должна превышать 50 символов', () => {

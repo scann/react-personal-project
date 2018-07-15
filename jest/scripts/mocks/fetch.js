@@ -1,4 +1,4 @@
-global.fetchResponseData = 'Data provided by API.';
+global.fetchResponseData = [];
 global.fetchResponse = {
     status: 200,
     json () {
