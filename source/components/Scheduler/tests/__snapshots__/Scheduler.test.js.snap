@@ -5,14 +5,14 @@ exports[`Компонент Scheduler: должен иметь базовую р
   <section
     className="scheduler"
   >
+    <Spinner
+      isSpinning={true}
+    >
+      <div
+        className="spinner"
+      />
+    </Spinner>
     <main>
-      <Spinner
-        isSpinning={true}
-      >
-        <div
-          className="spinner"
-        />
-      </Spinner>
       <header>
         <h1>
           Планировщик задач
