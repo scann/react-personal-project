@@ -1,5 +1,5 @@
-@import '../../theme/palette';
-@import '../../theme/breakpoints';
+@import '../../theme/palette.css';
+@import '../../theme/breakpoints.css';
 
 .scheduler {
     display: flex;
