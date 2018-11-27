@@ -2,12 +2,12 @@
 import React, { Component } from 'react';
 
 //Components
-import { withSvg } from '../../theme/assets/Checkbox';
+import Task from '../../components/Task';
 
 // Instruments
 import Styles from './styles.m.css';
-import { api } from '../../REST';
-import Checkbox from "../../theme/assets/Checkbox"; // ! Импорт модуля API должен иметь именно такой вид (import { api } from '../../REST')
+import { api } from '../../REST'; // ! Импорт модуля API должен иметь именно такой вид (import { api } from '../../REST')
+import Checkbox from "../../theme/assets/Checkbox";
 
 export default class Scheduler extends Component {
     render () {
@@ -23,7 +23,9 @@ export default class Scheduler extends Component {
                             <input placeholder = { `Описание моей новой задачи` } type = 'text' />
                             <button>Добавить задачу</button>
                         </form>
-                        <ul></ul>
+                        <ul>
+                            <Task />
+                        </ul>
                     </section>
                     <footer>
                         <Checkbox
