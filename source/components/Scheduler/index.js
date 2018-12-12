@@ -7,7 +7,6 @@ import Spinner from '../../components/Spinner';
 
 // Instruments
 import Styles from './styles.m.css';
-import { TOKEN } from "../../REST/config";
 import { api } from '../../REST'; // ! Импорт модуля API должен иметь именно такой вид (import { api } from '../../REST')
 import Checkbox from "../../theme/assets/Checkbox";
 
@@ -62,6 +61,16 @@ export default class Scheduler extends Component {
         this._setTasksFetchingState(false);
     };
 
+    _removeTask = async (id) => {
+        this._setTasksFetchingState(true);
+
+        await api.removeTask(id);
+        this.setState(({ tasks }) => ({
+            tasks:      tasks.filter((task) => task.id !== id),
+        }));
+        this._setTasksFetchingState(false);
+    };
+
     render () {
         const { tasks, isSpinning, newTaskMessage } = this.state;
 
@@ -69,6 +78,7 @@ export default class Scheduler extends Component {
             <Task
                 key = { task.id }
                 { ...task }
+                _removeTask = { this._removeTask }
             />
         ));
 
