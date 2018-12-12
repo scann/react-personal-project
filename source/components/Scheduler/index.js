@@ -15,12 +15,12 @@ export default class Scheduler extends Component {
     state = {
         newTaskMessage: '',
         isSpinning:     false,
-        tasks:          [
-            { id: '123', completed: true, favorite: false, message: 'Read the book' },
-            { id: '456', completed: false, favorite: true, message: 'Clean my room' }
-        ],
+        tasks:          [],
     };
 
+    componentDidMount () {
+        this._fetchTasks();
+    }
     _setTasksFetchingState = (state) => {
         this.setState({
             isSpinning: state,
@@ -30,6 +30,17 @@ export default class Scheduler extends Component {
     _updateNewTaskMessage = (event) => {
         this.setState({
             newTaskMessage: event.target.value,
+        });
+    };
+
+    _fetchTasks = async () => {
+        this._setTasksFetchingState(true);
+
+        const tasks = await api.fetchTasks();
+
+        this.setState({
+            tasks,
+            isSpinning: false,
         });
     };
 
