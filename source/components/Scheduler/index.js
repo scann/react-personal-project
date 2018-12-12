@@ -7,17 +7,48 @@ import Spinner from '../../components/Spinner';
 
 // Instruments
 import Styles from './styles.m.css';
+import { TOKEN } from "../../REST/config";
 import { api } from '../../REST'; // ! Импорт модуля API должен иметь именно такой вид (import { api } from '../../REST')
 import Checkbox from "../../theme/assets/Checkbox";
 
 export default class Scheduler extends Component {
     state = {
         newTaskMessage: '',
-        isSpinning:     true,
+        isSpinning:     false,
         tasks:          [
             { id: '123', completed: true, favorite: false, message: 'Read the book' },
             { id: '456', completed: false, favorite: true, message: 'Clean my room' }
         ],
+    };
+
+    _setTasksFetchingState = (state) => {
+        this.setState({
+            isSpinning: state,
+        });
+    };
+
+    _updateNewTaskMessage = (event) => {
+        this.setState({
+            newTaskMessage: event.target.value,
+        });
+    };
+
+    _createTask = async (event) => {
+        event.preventDefault();
+        this._setTasksFetchingState(true);
+        const { newTaskMessage } = this.state;
+
+        if (!newTaskMessage) {
+            return null;
+        }
+
+        const task = await api.createTask(newTaskMessage);
+
+        this.setState(({ tasks }) => ({
+            tasks:          [task, ...tasks],
+            newTaskMessage: '',
+        }));
+        this._setTasksFetchingState(false);
     };
 
     render () {
@@ -42,12 +73,13 @@ export default class Scheduler extends Component {
                         />
                     </header>
                     <section>
-                        <form>
+                        <form onSubmit = { this._createTask }>
                             <input
                                 maxLength = { 50 }
                                 placeholder = { `Описание моей новой задачи` }
                                 type = 'text'
                                 value = { newTaskMessage }
+                                onChange = { this._updateNewTaskMessage }
                             />
                             <button>Добавить задачу</button>
                         </form>
