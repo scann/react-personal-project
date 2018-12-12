@@ -5,7 +5,7 @@ export const api = {
         const response = await fetch(MAIN_URL, {
             method:  'GET',
             headers: {
-                Authorization:  TOKEN,
+                Authorization: TOKEN,
             },
         });
         const { data: tasks } = await response.json();
@@ -25,5 +25,14 @@ export const api = {
         const { data: task } = await response.json();
 
         return task;
+    },
+
+    async removeTask (id) {
+        const response = await fetch(`${MAIN_URL}/${id}`, {
+            method:  'DELETE',
+            headers: {
+                Authorization: TOKEN,
+            },
+        });
     },
 };
