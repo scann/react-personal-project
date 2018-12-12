@@ -1,6 +1,6 @@
 // Core
 import React, { PureComponent } from 'react';
-import { string, bool } from 'prop-types';
+import { string, bool, func } from 'prop-types';
 
 // Instruments
 import Styles from './styles.m.css';
@@ -11,10 +11,11 @@ import Remove from '../../theme/assets/Remove';
 
 export default class Task extends PureComponent {
     static propTypes = {
-        completed: bool.isRequired,
-        favorite:  bool.isRequired,
-        id:        string.isRequired,
-        message:   string.isRequired,
+        _removeTask: func.isRequired,
+        completed:   bool.isRequired,
+        favorite:    bool.isRequired,
+        id:          string.isRequired,
+        message:     string.isRequired,
     };
 
     state = {
@@ -33,6 +34,12 @@ export default class Task extends PureComponent {
         favorite,
         message,
     });
+
+    _removeTask = () => {
+        const { _removeTask, id } = this.props;
+
+        _removeTask(id);
+    };
 
     render () {
         const { isTaskEditing, newMessage } = this.state;
@@ -76,6 +83,7 @@ export default class Task extends PureComponent {
                         inlineBlock
                         color1 = '#3B8EF3'
                         color2 = '#000'
+                        onClick = { this._removeTask }
                     />
                 </div>
             </li>
