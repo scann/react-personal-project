@@ -66,7 +66,7 @@ export default class Scheduler extends Component {
 
         await api.removeTask(id);
         this.setState(({ tasks }) => ({
-            tasks:      tasks.filter((task) => task.id !== id),
+            tasks: tasks.filter((task) => task.id !== id),
         }));
         this._setTasksFetchingState(false);
     };
