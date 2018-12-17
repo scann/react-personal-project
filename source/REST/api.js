@@ -35,4 +35,18 @@ export const api = {
             },
         });
     },
+
+    async updateTask (updatedTask) {
+        const response = await fetch(MAIN_URL, {
+            method:  'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization:  TOKEN,
+            },
+            body: JSON.stringify([updatedTask]),
+        });
+        const { data: [updatedTaskResponse] } = await response.json();
+
+        return updatedTaskResponse;
+    },
 };
