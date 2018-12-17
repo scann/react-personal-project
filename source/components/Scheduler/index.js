@@ -9,6 +9,7 @@ import Spinner from '../../components/Spinner';
 import Styles from './styles.m.css';
 import { api } from '../../REST'; // ! Импорт модуля API должен иметь именно такой вид (import { api } from '../../REST')
 import Checkbox from "../../theme/assets/Checkbox";
+import { sortTasksByGroup } from "../../instruments";
 
 export default class Scheduler extends Component {
     state = {
@@ -38,7 +39,7 @@ export default class Scheduler extends Component {
         const tasks = await api.fetchTasks();
 
         this.setState({
-            tasks,
+            tasks:      sortTasksByGroup(tasks),
             isSpinning: false,
         });
     };
@@ -55,7 +56,7 @@ export default class Scheduler extends Component {
         const task = await api.createTask(newTaskMessage);
 
         this.setState(({ tasks }) => ({
-            tasks:          [task, ...tasks],
+            tasks:          sortTasksByGroup([task, ...tasks]),
             newTaskMessage: '',
         }));
         this._setTasksFetchingState(false);
@@ -71,6 +72,23 @@ export default class Scheduler extends Component {
         this._setTasksFetchingState(false);
     };
 
+    _updateTask = async (updatedTask) => {
+        this._setTasksFetchingState(true);
+
+        const updatedTaskResponse = await api.updateTask(updatedTask);
+
+        this.setState(({ tasks }) => {
+            const indexOfReplaceableTask = tasks.indexOf(
+                tasks.find((task) => task.id === updatedTask.id)
+            );
+            const newTasks = [...tasks.filter((task) => task.id !== updatedTask.id)];
+            const sortedTasks = sortTasksByGroup(newTasks.splice(indexOfReplaceableTask, 0, updatedTaskResponse));
+
+            return { tasks: sortedTasks };
+        });
+        this._setTasksFetchingState(false);
+    };
+
     render () {
         const { tasks, isSpinning, newTaskMessage } = this.state;
 
@@ -79,6 +97,7 @@ export default class Scheduler extends Component {
                 key = { task.id }
                 { ...task }
                 _removeTask = { this._removeTask }
+                _updateTask = { this._updateTask }
             />
         ));
 
