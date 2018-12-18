@@ -34,14 +34,20 @@ export default class Scheduler extends Component {
     };
 
     _fetchTasks = async () => {
-        this._setTasksFetchingState(true);
+        try {
+            this._setTasksFetchingState(true);
 
-        const tasks = await api.fetchTasks();
+            const tasks = await api.fetchTasks();
 
-        this.setState({
-            tasks:      sortTasksByGroup(tasks),
-            isSpinning: false,
-        });
+            this.setState({
+                tasks: sortTasksByGroup(tasks),
+            });
+        } catch (e) {
+            console.log(e);
+        } finally {
+            this._setTasksFetchingState(false);
+        }
+
     };
 
     _createTask = async (event) => {
@@ -73,20 +79,26 @@ export default class Scheduler extends Component {
     };
 
     _updateTask = async (updatedTask) => {
-        this._setTasksFetchingState(true);
+        try {
+            this._setTasksFetchingState(true);
 
-        const updatedTaskResponse = await api.updateTask(updatedTask);
+            const updatedTaskResponse = await api.updateTask(updatedTask);
 
-        this.setState(({ tasks }) => {
-            const indexOfReplaceableTask = tasks.indexOf(
-                tasks.find((task) => task.id === updatedTask.id)
-            );
-            const newTasks = [...tasks.filter((task) => task.id !== updatedTask.id)];
-            const sortedTasks = sortTasksByGroup(newTasks.splice(indexOfReplaceableTask, 0, updatedTaskResponse));
+            this.setState(({ tasks }) => {
+                const indexOfReplaceableTask = tasks.indexOf(
+                    tasks.find((task) => task.id === updatedTask.id)
+                );
+                const newTasks = [...tasks.filter((task) => task.id !== updatedTask.id)];
+                const sortedTasks = sortTasksByGroup(newTasks.splice(indexOfReplaceableTask, 0, updatedTaskResponse));
 
-            return { tasks: sortedTasks };
-        });
-        this._setTasksFetchingState(false);
+                return { tasks: sortedTasks };
+            });
+        } catch (e) {
+            console.log(e);
+        } finally {
+            this._setTasksFetchingState(false);
+        }
+
     };
 
     render () {
