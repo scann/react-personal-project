@@ -12,6 +12,7 @@ import Remove from '../../theme/assets/Remove';
 export default class Task extends PureComponent {
     static propTypes = {
         _removeTask: func.isRequired,
+        _updateTask: func.isRequired,
         completed:   bool.isRequired,
         favorite:    bool.isRequired,
         id:          string.isRequired,
@@ -62,7 +63,7 @@ export default class Task extends PureComponent {
     };
 
     _updateTask = () => {
-        const { _updateTask, message } = this.props;
+        const { _updateTask, id, completed, favorite, message } = this.props;
         const { newMessage } = this.state;
 
         if (message === newMessage) {
@@ -70,11 +71,12 @@ export default class Task extends PureComponent {
 
             return null;
         }
-        _updateTask({ message: newMessage });
+        _updateTask({ id, completed, favorite, message: newMessage });
         this._editTaskState(false);
     };
 
-    _updateTaskOnClick = () => {
+    _updateTaskOnClick = (event) => {
+        event.preventDefault();
         const { isTaskEditing } = this.state;
 
         if (isTaskEditing) {
