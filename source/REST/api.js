@@ -49,4 +49,22 @@ export const api = {
 
         return updatedTaskResponse;
     },
+
+    async completeAllTasks (tasks) {
+        const taskPromises = [];
+
+        for (const task of tasks) {
+            taskPromises.push(
+                fetch(MAIN_URL, {
+                    method:  'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization:  TOKEN,
+                    },
+                    body: JSON.stringify([{ ...task, completed: true }]),
+                }),
+            );
+        }
+        const response = await Promise.all(taskPromises);
+    },
 };
