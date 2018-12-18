@@ -14,6 +14,7 @@ import { sortTasksByGroup } from "../../instruments";
 export default class Scheduler extends Component {
     state = {
         newTaskMessage: '',
+        taskFilter:     '',
         isSpinning:     false,
         tasks:          [],
     };
@@ -33,6 +34,11 @@ export default class Scheduler extends Component {
         });
     };
 
+    _updateTaskFilter = (event) => {
+        this.setState({
+            taskFilter: event.target.value.toLowerCase(),
+        });
+    };
     _fetchTasks = async () => {
         try {
             this._setTasksFetchingState(true);
@@ -102,16 +108,18 @@ export default class Scheduler extends Component {
     };
 
     render () {
-        const { tasks, isSpinning, newTaskMessage } = this.state;
+        const { tasks, isSpinning, newTaskMessage, taskFilter } = this.state;
 
-        const taskListJSX = tasks.map((task) => (
-            <Task
-                key = { task.id }
-                { ...task }
-                _removeTask = { this._removeTask }
-                _updateTask = { this._updateTask }
-            />
-        ));
+        const taskListJSX = tasks
+            .filter((task) => task.message.toLowerCase().indexOf(taskFilter))
+            .map((task) => (
+                <Task
+                    key = { task.id }
+                    { ...task }
+                    _removeTask = { this._removeTask }
+                    _updateTask = { this._updateTask }
+                />
+            ));
 
         return (
             <section className = { Styles.scheduler }>
@@ -122,6 +130,7 @@ export default class Scheduler extends Component {
                         <input
                             placeholder = { `Поиск` }
                             type = 'search'
+                            onChange = { this._updateTaskFilter }
                         />
                     </header>
                     <section>
