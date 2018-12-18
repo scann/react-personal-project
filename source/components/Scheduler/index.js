@@ -111,7 +111,7 @@ export default class Scheduler extends Component {
         const { tasks, isSpinning, newTaskMessage, taskFilter } = this.state;
 
         const taskListJSX = tasks
-            .filter((task) => task.message.toLowerCase().indexOf(taskFilter))
+            .filter((task) => task.message.toLowerCase().includes(taskFilter))
             .map((task) => (
                 <Task
                     key = { task.id }
