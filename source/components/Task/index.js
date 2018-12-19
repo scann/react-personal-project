@@ -1,6 +1,7 @@
 // Core
 import React, { PureComponent, createRef } from 'react';
 import { string, bool, func } from 'prop-types';
+import cx from 'classnames';
 
 // Instruments
 import Styles from './styles.m.css';
@@ -75,8 +76,7 @@ export default class Task extends PureComponent {
         this._editTaskState(false);
     };
 
-    _updateTaskOnClick = (event) => {
-        event.preventDefault();
+    _updateTaskOnClick = () => {
         const { isTaskEditing } = this.state;
 
         if (isTaskEditing) {
@@ -110,14 +110,31 @@ export default class Task extends PureComponent {
         }
     };
 
+    _toggleTaskCompletedState = () => {
+        const { _updateTask, completed } = this.props;
+        const completedTask = this._getTaskShape({ completed: !completed });
+
+        _updateTask(completedTask);
+    };
+
+    _toggleTaskFavoriteState = () => {
+        const { _updateTask, favorite } = this.props;
+        const favoriteTask = this._getTaskShape({ favorite: !favorite });
+
+        _updateTask(favoriteTask);
+    };
+
     render () {
         const { isTaskEditing, newMessage } = this.state;
         const { message, favorite, completed } = this.props;
 
+        const taskStyles = cx(Styles.task, {
+            [Styles.completed]: completed,
+        });
         const currentMessage = isTaskEditing ? newMessage : message;
 
         return (
-            <li className = { Styles.task }>
+            <li className = { taskStyles }>
                 <div className = { Styles.content }>
                     <Checkbox
                         inlineBlock
@@ -125,12 +142,14 @@ export default class Task extends PureComponent {
                         className = { Styles.toggleTaskCompletedState }
                         color1 = '#3b8ef3'
                         color2 = '#FFF'
+                        onClick = { this._toggleTaskCompletedState }
+
                     />
                     <input
                         disabled = { !isTaskEditing }
                         maxLength = { 50 }
-                        type = 'text'
                         ref = { this.taskInput }
+                        type = 'text'
                         value = { currentMessage }
                         onChange = { this._updateNewTaskMessage }
                         onKeyDown = { this._updateNewTaskMessageOnKeyDown }
@@ -143,6 +162,7 @@ export default class Task extends PureComponent {
                         className = { Styles.toggleTaskFavoriteState }
                         color1 = '#3B8EF3'
                         color2 = '#000'
+                        onClick = { this._toggleTaskFavoriteState }
                     />
                     <Edit
                         inlineBlock
