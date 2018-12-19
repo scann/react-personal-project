@@ -1,5 +1,6 @@
 // Core
 import React, { Component } from 'react';
+import FlipMove from 'react-flip-move';
 
 //Components
 import Task from '../../components/Task';
@@ -17,6 +18,12 @@ export default class Scheduler extends Component {
         taskFilter:     '',
         isSpinning:     false,
         tasks:          [],
+    };
+
+    _makeAllTasksCompleted = () => {
+        this.setState(({ tasks }) => {
+            tasks.map((task) => ({ ...task, completed: true }));
+        });
     };
 
     componentDidMount () {
@@ -39,21 +46,16 @@ export default class Scheduler extends Component {
             taskFilter: event.target.value.toLowerCase(),
         });
     };
+
     _fetchTasks = async () => {
-        try {
-            this._setTasksFetchingState(true);
+        this._setTasksFetchingState(true);
 
-            const tasks = await api.fetchTasks();
+        const tasks = await api.fetchTasks();
 
-            this.setState({
-                tasks: sortTasksByGroup(tasks),
-            });
-        } catch (e) {
-            console.log(e);
-        } finally {
-            this._setTasksFetchingState(false);
-        }
-
+        this.setState({
+            tasks: sortTasksByGroup(tasks),
+        });
+        this._setTasksFetchingState(false);
     };
 
     _createTask = async (event) => {
@@ -95,20 +97,36 @@ export default class Scheduler extends Component {
                     tasks.find((task) => task.id === updatedTask.id)
                 );
                 const newTasks = [...tasks.filter((task) => task.id !== updatedTask.id)];
-                const sortedTasks = sortTasksByGroup(newTasks.splice(indexOfReplaceableTask, 0, updatedTaskResponse));
 
-                return { tasks: sortedTasks };
+                newTasks.splice(indexOfReplaceableTask, 0, updatedTaskResponse);
+                const resultTasks = sortTasksByGroup(newTasks);
+
+                return { tasks: resultTasks };
             });
         } catch (e) {
             console.log(e);
         } finally {
             this._setTasksFetchingState(false);
         }
+    };
 
+    _completeAllTasks = async () => {
+        if (this._makeAllTasksCompleted()) {
+            return null;
+        }
+        this._setTasksFetchingState(true);
+        await api.completeAllTasks(this.state.tasks);
+
+        this.setState(({ tasks }) => {
+            sortTasksByGroup(tasks.map((task) => ({ ...task, completed: true })));
+        });
+        this._setTasksFetchingState(false);
     };
 
     render () {
         const { tasks, isSpinning, newTaskMessage, taskFilter } = this.state;
+
+        const allTasksCompleted = this._makeAllTasksCompleted();
 
         const taskListJSX = tasks
             .filter((task) => task.message.toLowerCase().includes(taskFilter))
@@ -144,15 +162,40 @@ export default class Scheduler extends Component {
                             />
                             <button>Добавить задачу</button>
                         </form>
-                        <ul>
-                            { taskListJSX }
-                        </ul>
+                        <div>
+                            <ul>
+                                <FlipMove
+                                    enterAnimation = { {
+                                        from: {
+                                            transform: 'rotateX(180deg)',
+                                            opacity:   0.1,
+                                        },
+                                        to: {
+                                            transform: '',
+                                        },
+                                    } }
+                                    leaveAnimation = { {
+                                        from: {
+                                            transform: '',
+                                        },
+                                        to: {
+                                            transform: 'rotateX(-120deg)',
+                                            opacity:   0.1,
+                                        },
+                                    } }
+                                    staggerDelayBy = { 100 }>
+                                    { taskListJSX }
+                                </FlipMove>
+                            </ul>
+                        </div>
                     </section>
                     <footer>
                         <Checkbox
                             inlineBlock
+                            checked = { allTasksCompleted }
                             color1 = '#000'
                             color2 = '#FFF'
+                            onClick = { this._completeAllTasks }
                         />
                         <span className = { Styles.completeAllTasks }>
                             Все задачи выполнены
