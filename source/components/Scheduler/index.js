@@ -20,15 +20,12 @@ export default class Scheduler extends Component {
         tasks:          [],
     };
 
-    _makeAllTasksCompleted = () => {
-        this.setState(({ tasks }) => {
-            tasks.map((task) => ({ ...task, completed: true }));
-        });
-    };
+    _getCompletedTasks = () => this.state.tasks.every((task) => task.completed);
 
     componentDidMount () {
         this._fetchTasks();
     }
+
     _setTasksFetchingState = (state) => {
         this.setState({
             isSpinning: state,
@@ -111,7 +108,7 @@ export default class Scheduler extends Component {
     };
 
     _completeAllTasks = async () => {
-        if (this._makeAllTasksCompleted()) {
+        if (this._getCompletedTasks()) {
             return null;
         }
         this._setTasksFetchingState(true);
@@ -126,7 +123,7 @@ export default class Scheduler extends Component {
     render () {
         const { tasks, isSpinning, newTaskMessage, taskFilter } = this.state;
 
-        const allTasksCompleted = this._makeAllTasksCompleted();
+        const allTasksCompleted = this._getCompletedTasks();
 
         const taskListJSX = tasks
             .filter((task) => task.message.toLowerCase().includes(taskFilter))
