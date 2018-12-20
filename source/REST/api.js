@@ -10,7 +10,9 @@ export const api = {
         });
         const { data: tasks } = await response.json();
 
-        return tasks;
+        if (response.status === 200) {
+            return tasks;
+        }
     },
 
     async createTask (newTaskMessage) {
@@ -24,7 +26,9 @@ export const api = {
         });
         const { data: task } = await response.json();
 
-        return task;
+        if (response.status === 200) {
+            return task;
+        }
     },
 
     async removeTask (id) {
@@ -34,6 +38,10 @@ export const api = {
                 Authorization: TOKEN,
             },
         });
+
+        if (response.status !== 204) {
+            console.log('Error! Task was not deleted!');
+        }
     },
 
     async updateTask (updatedTask) {
@@ -47,7 +55,9 @@ export const api = {
         });
         const { data: [updatedTaskResponse] } = await response.json();
 
-        return updatedTaskResponse;
+        if (response.status === 200) {
+            return updatedTaskResponse;
+        }
     },
 
     async completeAllTasks (tasks) {
@@ -65,6 +75,12 @@ export const api = {
                 }),
             );
         }
-        const response = await Promise.all(taskPromises);
+        const responses = await Promise.all(taskPromises);
+
+        for (const response of responses) {
+            if (response.status !== 200) {
+                console.log('Task was not completed');
+            }
+        }
     },
 };
