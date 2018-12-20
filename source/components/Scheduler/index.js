@@ -14,21 +14,21 @@ import { sortTasksByGroup } from "../../instruments";
 
 export default class Scheduler extends Component {
     state = {
-        newTaskMessage: '',
-        taskFilter:     '',
-        isSpinning:     false,
-        tasks:          [],
+        newTaskMessage:  '',
+        tasksFilter:     '',
+        isTasksFetching: false,
+        tasks:           [],
     };
 
-    _getCompletedTasks = () => this.state.tasks.every((task) => task.completed);
+    _getAllCompleted = () => this.state.tasks.every((task) => task.completed);
 
     componentDidMount () {
-        this._fetchTasks();
+        this._fetchTasksAsync();
     }
 
     _setTasksFetchingState = (state) => {
         this.setState({
-            isSpinning: state,
+            isTasksFetching: state,
         });
     };
 
@@ -38,13 +38,13 @@ export default class Scheduler extends Component {
         });
     };
 
-    _updateTaskFilter = (event) => {
+    _updateTasksFilter = (event) => {
         this.setState({
-            taskFilter: event.target.value.toLowerCase(),
+            tasksFilter: event.target.value.toLowerCase(),
         });
     };
 
-    _fetchTasks = async () => {
+    _fetchTasksAsync = async () => {
         this._setTasksFetchingState(true);
 
         const tasks = await api.fetchTasks();
@@ -55,7 +55,7 @@ export default class Scheduler extends Component {
         this._setTasksFetchingState(false);
     };
 
-    _createTask = async (event) => {
+    _createTaskAsync = async (event) => {
         event.preventDefault();
         this._setTasksFetchingState(true);
         const { newTaskMessage } = this.state;
@@ -73,7 +73,7 @@ export default class Scheduler extends Component {
         this._setTasksFetchingState(false);
     };
 
-    _removeTask = async (id) => {
+    _removeTaskAsync = async (id) => {
         this._setTasksFetchingState(true);
 
         await api.removeTask(id);
@@ -83,7 +83,7 @@ export default class Scheduler extends Component {
         this._setTasksFetchingState(false);
     };
 
-    _updateTask = async (updatedTask) => {
+    _updateTaskAsync = async (updatedTask) => {
         try {
             this._setTasksFetchingState(true);
 
@@ -107,8 +107,8 @@ export default class Scheduler extends Component {
         }
     };
 
-    _completeAllTasks = async () => {
-        if (this._getCompletedTasks()) {
+    _completeAllTasksAsync = async () => {
+        if (this._getAllCompleted()) {
             return null;
         }
         this._setTasksFetchingState(true);
@@ -122,36 +122,38 @@ export default class Scheduler extends Component {
     };
 
     render () {
-        const { tasks, isSpinning, newTaskMessage, taskFilter } = this.state;
+        const { tasks, isTasksFetching, newTaskMessage, tasksFilter } = this.state;
 
-        const allTasksCompleted = this._getCompletedTasks();
+        const allTasksCompleted = this._getAllCompleted();
 
         const taskListJSX = tasks
-            .filter((task) => task.message.toLowerCase().includes(taskFilter))
+            .filter((task) => task.message.toLowerCase().includes(tasksFilter))
             .map((task) => (
                 <Task
                     key = { task.id }
                     { ...task }
-                    _removeTask = { this._removeTask }
-                    _updateTask = { this._updateTask }
+                    _removeTaskAsync = { this._removeTaskAsync }
+                    _updateTaskAsync = { this._updateTaskAsync }
                 />
             ));
 
         return (
             <section className = { Styles.scheduler }>
                 <main>
-                    <Spinner isSpinning = { isSpinning } />
+                    <Spinner isSpinning = { isTasksFetching } />
                     <header>
                         <h1>Планировщик задач</h1>
                         <input
                             placeholder = { `Поиск` }
                             type = 'search'
-                            onChange = { this._updateTaskFilter }
+                            value = { tasksFilter }
+                            onChange = { this._updateTasksFilter }
                         />
                     </header>
                     <section>
-                        <form onSubmit = { this._createTask }>
+                        <form onSubmit = { this._createTaskAsync }>
                             <input
+                                className = { Styles.createTask }
                                 maxLength = { 50 }
                                 placeholder = { `Описание моей новой задачи` }
                                 type = 'text'
@@ -189,11 +191,10 @@ export default class Scheduler extends Component {
                     </section>
                     <footer>
                         <Checkbox
-                            inlineBlock
                             checked = { allTasksCompleted }
-                            color1 = '#000'
-                            color2 = '#FFF'
-                            onClick = { this._completeAllTasks }
+                            color1 = '#363636'
+                            color2 = '#fff'
+                            onClick = { this._completeAllTasksAsync }
                         />
                         <span className = { Styles.completeAllTasks }>
                             Все задачи выполнены
