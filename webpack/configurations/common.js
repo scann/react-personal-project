@@ -57,6 +57,7 @@ export const generateCommonConfiguration = () => {
             entry: {
                 source,
             },
+            externals: ['fs'],
             output: {
                 path:       build,
                 publicPath: IS_DEPLOYING_TO_GITHUB_PAGES ? `/${REPOSITORY_NAME}/` : '/',
