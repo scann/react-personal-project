@@ -43,42 +43,57 @@ export default class Scheduler extends Component {
     };
 
     _fetchTasksAsync = async () => {
-        this._setTasksFetchingState(true);
+        try {
+            this._setTasksFetchingState(true);
 
-        const tasks = await api.fetchTasks();
+            const tasks = await api.fetchTasks();
 
-        this.setState({
-            tasks: sortTasksByGroup(tasks),
-        });
-        this._setTasksFetchingState(false);
+            this.setState({
+                tasks: sortTasksByGroup(tasks),
+            });
+        } catch (error) {
+            console.log(error.message);
+        } finally {
+            this._setTasksFetchingState(false);
+        }
     };
 
     _createTaskAsync = async (event) => {
-        event.preventDefault();
-        this._setTasksFetchingState(true);
-        const { newTaskMessage } = this.state;
+        try {
+            event.preventDefault();
+            this._setTasksFetchingState(true);
+            const { newTaskMessage } = this.state;
 
-        if (!newTaskMessage) {
-            return null;
+            if (!newTaskMessage) {
+                return null;
+            }
+
+            const task = await api.createTask(newTaskMessage);
+
+            this.setState(({ tasks }) => ({
+                tasks:          sortTasksByGroup([task, ...tasks]),
+                newTaskMessage: '',
+            }));
+        } catch (error) {
+            console.log(error.message);
+        } finally {
+            this._setTasksFetchingState(false);
         }
-
-        const task = await api.createTask(newTaskMessage);
-
-        this.setState(({ tasks }) => ({
-            tasks:          sortTasksByGroup([task, ...tasks]),
-            newTaskMessage: '',
-        }));
-        this._setTasksFetchingState(false);
     };
 
     _removeTaskAsync = async (id) => {
-        this._setTasksFetchingState(true);
+        try {
+            this._setTasksFetchingState(true);
 
-        await api.removeTask(id);
-        this.setState(({ tasks }) => ({
-            tasks: tasks.filter((task) => task.id !== id),
-        }));
-        this._setTasksFetchingState(false);
+            await api.removeTask(id);
+            this.setState(({ tasks }) => ({
+                tasks: tasks.filter((task) => task.id !== id),
+            }));
+        } catch (error) {
+            console.log(error.message);
+        } finally {
+            this._setTasksFetchingState(false);
+        }
     };
 
     _updateTaskAsync = async (updatedTask) => {
@@ -98,25 +113,29 @@ export default class Scheduler extends Component {
 
                 return { tasks: resultTasks };
             });
-        } catch (e) {
-            console.log(e);
+        } catch (error) {
+            console.log(error.message);
         } finally {
             this._setTasksFetchingState(false);
         }
     };
 
     _completeAllTasksAsync = async () => {
-        if (this._getAllCompleted()) {
-            return null;
+        try {
+            if (this._getAllCompleted()) {
+                return null;
+            }
+            this._setTasksFetchingState(true);
+            await api.completeAllTasks(this.state.tasks);
+
+            this.setState(({ tasks }) => ({
+                tasks: sortTasksByGroup(tasks.map((task) => ({ ...task, completed: true }))),
+            }));
+        } catch(error) {
+            console.log(error.message);
+        } finally {
+            this._setTasksFetchingState(false);
         }
-        this._setTasksFetchingState(true);
-        await api.completeAllTasks(this.state.tasks);
-
-        this.setState(({ tasks }) => ({
-            tasks: sortTasksByGroup(tasks.map((task) => ({ ...task, completed: true }))),
-        }));
-
-        this._setTasksFetchingState(false);
     };
 
     render () {
