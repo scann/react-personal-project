@@ -39,9 +39,7 @@ export default class Scheduler extends Component {
     };
 
     _updateTasksFilter = (event) => {
-        this.setState({
-            tasksFilter: event.target.value.toLowerCase(),
-        });
+        this.setState({ tasksFilter: event.target.value.toLowerCase() });
     };
 
     _fetchTasksAsync = async () => {
