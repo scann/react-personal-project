@@ -1,6 +1,7 @@
 // Core
 import React, { Component } from 'react';
 import FlipMove from 'react-flip-move';
+import { transports, createLogger, format } from 'winston';
 
 //Components
 import Task from '../../components/Task';
@@ -11,6 +12,17 @@ import Styles from './styles.m.css';
 import { api } from '../../REST'; // ! Импорт модуля API должен иметь именно такой вид (import { api } from '../../REST')
 import Checkbox from "../../theme/assets/Checkbox";
 import { sortTasksByGroup } from "../../instruments";
+
+const { combine, timestamp, prettyPrint } = format;
+
+const logger = createLogger({
+    level:  'error',
+    format: combine(
+        timestamp(),
+        prettyPrint()),
+    exitOnError: false,
+    transports:  [new transports.Console()],
+});
 
 export default class Scheduler extends Component {
     state = {
@@ -52,7 +64,7 @@ export default class Scheduler extends Component {
                 tasks: sortTasksByGroup(tasks),
             });
         } catch (error) {
-            console.log(error.message);
+            logger.error(error.message);
         } finally {
             this._setTasksFetchingState(false);
         }
@@ -75,7 +87,7 @@ export default class Scheduler extends Component {
                 newTaskMessage: '',
             }));
         } catch (error) {
-            console.log(error.message);
+            logger.error(error.message);
         } finally {
             this._setTasksFetchingState(false);
         }
@@ -90,7 +102,7 @@ export default class Scheduler extends Component {
                 tasks: tasks.filter((task) => task.id !== id),
             }));
         } catch (error) {
-            console.log(error.message);
+            logger.error(error.message);
         } finally {
             this._setTasksFetchingState(false);
         }
@@ -114,7 +126,7 @@ export default class Scheduler extends Component {
                 return { tasks: resultTasks };
             });
         } catch (error) {
-            console.log(error.message);
+            logger.error(error.message);
         } finally {
             this._setTasksFetchingState(false);
         }
@@ -131,8 +143,8 @@ export default class Scheduler extends Component {
             this.setState(({ tasks }) => ({
                 tasks: sortTasksByGroup(tasks.map((task) => ({ ...task, completed: true }))),
             }));
-        } catch(error) {
-            console.log(error.message);
+        } catch (error) {
+            logger.error(error.message);
         } finally {
             this._setTasksFetchingState(false);
         }
