@@ -5,14 +5,14 @@ exports[`Компонент Scheduler: должен иметь базовую р
   <section
     className="scheduler"
   >
-    <Spinner
-      isSpinning={true}
-    >
-      <div
-        className="spinner"
-      />
-    </Spinner>
     <main>
+      <Spinner
+        isSpinning={true}
+      >
+        <div
+          className="spinner"
+        />
+      </Spinner>
       <header>
         <h1>
           Планировщик задач
@@ -32,7 +32,7 @@ exports[`Компонент Scheduler: должен иметь базовую р
             className="createTask"
             maxLength={50}
             onChange={[MockFunction]}
-            placeholder="Описaние моей новой задачи"
+            placeholder="Описание моей новой задачи"
             type="text"
             value=""
           />
@@ -40,20 +40,38 @@ exports[`Компонент Scheduler: должен иметь базовую р
             Добавить задачу
           </button>
         </form>
-        <div
-          className="overlay"
-        >
+        <div>
           <ul>
             <FlipMovePropConverter
               delay={0}
               disableAllAnimations={false}
-              duration={400}
+              duration={350}
               easing="ease-in-out"
-              enterAnimation="elevator"
+              enterAnimation={
+                Object {
+                  "from": Object {
+                    "opacity": 0.1,
+                    "transform": "rotateX(180deg)",
+                  },
+                  "to": Object {
+                    "transform": "",
+                  },
+                }
+              }
               getPosition={[Function]}
-              leaveAnimation="elevator"
+              leaveAnimation={
+                Object {
+                  "from": Object {
+                    "transform": "",
+                  },
+                  "to": Object {
+                    "opacity": 0.1,
+                    "transform": "rotateX(-120deg)",
+                  },
+                }
+              }
               maintainContainerHeight={false}
-              staggerDelayBy={0}
+              staggerDelayBy={100}
               staggerDurationBy={0}
               typeName="div"
               verticalAlignment="top"
@@ -68,16 +86,15 @@ exports[`Компонент Scheduler: должен иметь базовую р
                   }
                 }
                 disableAllAnimations={false}
-                duration={400}
+                duration={350}
                 easing="ease-in-out"
                 enterAnimation={
                   Object {
                     "from": Object {
-                      "opacity": "0",
-                      "transform": "scale(0)",
+                      "opacity": 0.1,
+                      "transform": "rotateX(180deg)",
                     },
                     "to": Object {
-                      "opacity": "",
                       "transform": "",
                     },
                   }
@@ -86,17 +103,16 @@ exports[`Компонент Scheduler: должен иметь базовую р
                 leaveAnimation={
                   Object {
                     "from": Object {
-                      "opacity": "1",
-                      "transform": "scale(1)",
+                      "transform": "",
                     },
                     "to": Object {
-                      "opacity": "0",
-                      "transform": "scale(0)",
+                      "opacity": 0.1,
+                      "transform": "rotateX(-120deg)",
                     },
                   }
                 }
                 maintainContainerHeight={false}
-                staggerDelayBy={0}
+                staggerDelayBy={100}
                 staggerDurationBy={0}
                 typeName="div"
                 verticalAlignment="top"
