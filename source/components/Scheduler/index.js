@@ -106,7 +106,7 @@ export default class Scheduler extends Component {
                 const indexOfReplaceableTask = tasks.indexOf(
                     tasks.find((task) => task.id === updatedTask.id)
                 );
-                const newTasks = [...tasks.filter((task) => task.id !== updatedTask.id)];
+                const newTasks = tasks.filter((task) => task.id !== updatedTask.id);
 
                 newTasks.splice(indexOfReplaceableTask, 0, updatedTaskResponse);
                 const resultTasks = sortTasksByGroup(newTasks);
