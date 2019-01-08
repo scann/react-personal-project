@@ -115,15 +115,15 @@ export default class Scheduler extends Component {
             const updatedTaskResponse = await api.updateTask(updatedTask);
 
             this.setState(({ tasks }) => {
-                const indexOfReplaceableTask = tasks.indexOf(
-                    tasks.find((task) => task.id === updatedTask.id)
-                );
-                const newTasks = tasks.filter((task) => task.id !== updatedTask.id);
+                const newTasks = tasks.map((task) => {
+                    if (task.id === updatedTask.id) {
+                        task = updatedTaskResponse;
+                    }
 
-                newTasks.splice(indexOfReplaceableTask, 0, updatedTaskResponse);
-                const resultTasks = sortTasksByGroup(newTasks);
+                    return task;
+                });
 
-                return { tasks: resultTasks };
+                return { tasks: sortTasksByGroup(newTasks) };
             });
         } catch (error) {
             logger.error(error.message);
