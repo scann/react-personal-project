@@ -63,7 +63,7 @@
         "gh-pages": "~1.2.0",
         "git-repo-name": "~0.6.0",
         "growl": "^1.10.5",
-        "handlebars": "^4.1.2",
+        "handlebars": "^4.5.3",
         "html-webpack-plugin": "~3.2.0",
         "html-webpack-template": "~6.2.0",
         "identity-obj-proxy": "~3.0.0",
